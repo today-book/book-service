@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
 import org.todaybook.bookservice.BookFixture;
 import org.todaybook.bookservice.domain.dto.BookCreate;
 import org.todaybook.bookservice.domain.dto.BookUpdate;
