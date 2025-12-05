@@ -1,8 +1,7 @@
 package org.todaybook.bookservice.config;
 
-import com.zaxxer.hikari.HikariDataSource;
-import javax.sql.DataSource;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
@@ -10,6 +9,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 public class TestContainersConfig {
 
   @Bean
+  @ServiceConnection
   public PostgreSQLContainer postgreSQLContainer() {
     PostgreSQLContainer postgres =
         new PostgreSQLContainer("postgres:17")
@@ -18,14 +18,5 @@ public class TestContainersConfig {
             .withPassword("1234");
     postgres.start();
     return postgres;
-  }
-
-  @Bean
-  public DataSource dataSource(PostgreSQLContainer postgres) {
-    HikariDataSource dataSource = new HikariDataSource();
-    dataSource.setJdbcUrl(postgres.getJdbcUrl());
-    dataSource.setUsername(postgres.getUsername());
-    dataSource.setPassword(postgres.getPassword());
-    return dataSource;
   }
 }

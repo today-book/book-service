@@ -2,12 +2,12 @@ package org.todaybook.bookservice;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import org.todaybook.bookservice.domain.dto.BookCreate;
-import org.todaybook.bookservice.domain.dto.BookUpdate;
+import org.todaybook.bookservice.domain.dto.BookCreateInfo;
+import org.todaybook.bookservice.domain.dto.BookUpdateInfo;
 
 public class BookFixture {
-  public static BookCreate bookCreate() {
-    return new BookCreate(
+  public static BookCreateInfo bookCreate() {
+    return new BookCreateInfo(
         "0000000000001",
         "도서 제목",
         List.of("IT", "Programming"),
@@ -18,8 +18,8 @@ public class BookFixture {
         "http://example.com/thumb.png");
   }
 
-  public static BookUpdate bookUpdate() {
-    return new BookUpdate(
+  public static BookUpdateInfo bookUpdate() {
+    return new BookUpdateInfo(
         "도서 제목",
         List.of("IT", "Programming", "AI"),
         "도서 소개글을 수정합니다.",

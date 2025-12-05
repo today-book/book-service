@@ -3,7 +3,7 @@ package org.todaybook.bookservice.domain.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record BookCreate(
+public record BookCreateInfo(
     String isbn,
     String title,
     List<String> categories,
