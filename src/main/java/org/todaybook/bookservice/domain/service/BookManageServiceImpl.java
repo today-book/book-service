@@ -83,18 +83,15 @@ public class BookManageServiceImpl implements BookManageService {
 
     // 도서 소개 업데이트
     String description = request.description();
-    if (request.description() == null
-        || description.length() < book.getDescription().length()) {
+    if (request.description() == null || description.length() < book.getDescription().length()) {
       description = book.getDescription();
     }
 
     // 출판사, 출판일, 도서 이미지 업데이트
-    String publisher =
-        request.publisher() != null ? request.publisher() : book.getPublisher();
+    String publisher = request.publisher() != null ? request.publisher() : book.getPublisher();
     LocalDateTime publishedAt =
         request.publishedAt() != null ? request.publishedAt() : book.getPublishedAt();
-    String thumbnail =
-        request.thumbnail() != null ? request.thumbnail() : book.getThumbnail();
+    String thumbnail = request.thumbnail() != null ? request.thumbnail() : book.getThumbnail();
 
     BookUpdateInfo bookUpdate =
         BookUpdateInfo.builder()
