@@ -3,7 +3,6 @@ package org.todaybook.bookservice.domain;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
@@ -14,79 +13,47 @@ import org.todaybook.bookservice.domain.dto.BookUpdate;
 @ActiveProfiles("test")
 class BookTest {
 
-	@Test
-	@DisplayName("유효한 도서 생성 테스트")
-	void test1() {
-		BookCreate dto = new BookCreate(
-			"0000000000001",
-			"도서 제목",
-			List.of("소설"),
-			"도서 설명",
-			"도서 저자",
-			null,
-			null,
-			null
-		);
+  @Test
+  @DisplayName("유효한 도서 생성 테스트")
+  void test1() {
+    BookCreate dto =
+        new BookCreate("0000000000001", "도서 제목", List.of("소설"), "도서 설명", "도서 저자", null, null, null);
 
-		Book result = Book.create(dto);
+    Book result = Book.create(dto);
 
-		assertNotNull(result);
-		assertEquals("0000000000001", result.getIsbn());
-	}
+    assertNotNull(result);
+    assertEquals("0000000000001", result.getIsbn());
+  }
 
-	@Test
-	@DisplayName("잘못된 도서 생성 테스트")
-	void test2() {
-		BookCreate dto = new BookCreate(
-			null,
-			"도서 제목",
-			List.of("소설"),
-			"도서 설명",
-			"도서 저자",
-			null,
-			null,
-			null
-		);
+  @Test
+  @DisplayName("잘못된 도서 생성 테스트")
+  void test2() {
+    BookCreate dto =
+        new BookCreate(null, "도서 제목", List.of("소설"), "도서 설명", "도서 저자", null, null, null);
 
-		assertThrows(IllegalArgumentException.class, () -> Book.create(dto));
-	}
+    assertThrows(IllegalArgumentException.class, () -> Book.create(dto));
+  }
 
-	@Test
-	@DisplayName("유효한 도서 업데이트 테스트")
-	void test3() {
-		Book book = Book.create(BookFixture.bookCreate());
+  @Test
+  @DisplayName("유효한 도서 업데이트 테스트")
+  void test3() {
+    Book book = Book.create(BookFixture.bookCreate());
 
-		BookUpdate dto = new BookUpdate(
-			"도서 제목 수정",
-			List.of("소설"),
-			"도서 설명",
-			"도서 저자",
-			null,
-			null,
-			null
-		);
+    BookUpdate dto = new BookUpdate("도서 제목 수정", List.of("소설"), "도서 설명", "도서 저자", null, null, null);
 
-		Book result = book.update(dto);
+    Book result = book.update(dto);
 
-		assertNotNull(result);
-		assertEquals("도서 제목 수정", result.getTitle());
-	}
+    assertNotNull(result);
+    assertEquals("도서 제목 수정", result.getTitle());
+  }
 
-	@Test
-	@DisplayName("잘못된 도서 업데이트 테스트")
-	void test4() {
-		Book book = Book.create(BookFixture.bookCreate());
+  @Test
+  @DisplayName("잘못된 도서 업데이트 테스트")
+  void test4() {
+    Book book = Book.create(BookFixture.bookCreate());
 
-		BookUpdate dto = new BookUpdate(
-			null,
-			List.of("소설"),
-			"도서 설명",
-			"도서 저자",
-			null,
-			null,
-			null
-		);
+    BookUpdate dto = new BookUpdate(null, List.of("소설"), "도서 설명", "도서 저자", null, null, null);
 
-		assertThrows(IllegalArgumentException.class, () -> book.update(dto));
-	}
+    assertThrows(IllegalArgumentException.class, () -> book.update(dto));
+  }
 }
