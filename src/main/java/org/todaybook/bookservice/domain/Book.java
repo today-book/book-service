@@ -3,6 +3,7 @@ package org.todaybook.bookservice.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,13 +15,15 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.todaybook.bookservice.domain.dto.BookCreate;
 import org.todaybook.bookservice.domain.dto.BookUpdate;
 
-@Table(schema = "book", name = "p_books")
 @Entity
 @Getter
 @ToString
+@Table(schema = "book", name = "p_books")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book {
 
@@ -49,7 +52,7 @@ public class Book {
   @Column(columnDefinition = "TEXT")
   private String thumbnail;
 
-  @Column(nullable = false)
+  @Column(nullable = false, updatable = false)
   @CreatedDate
   private LocalDateTime createdAt;
 
