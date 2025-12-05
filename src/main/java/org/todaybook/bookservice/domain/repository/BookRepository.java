@@ -9,7 +9,9 @@ import org.todaybook.bookservice.domain.BookId;
 
 public interface BookRepository extends Repository<Book, BookId> {
   Optional<Book> findById(BookId id);
+
   @Query("SELECT b FROM Book b WHERE b.id in :ids")
   List<Book> findByIds(List<BookId> ids);
+
   Book save(Book book);
 }
