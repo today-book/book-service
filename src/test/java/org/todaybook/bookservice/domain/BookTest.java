@@ -10,16 +10,12 @@ import org.todaybook.bookservice.BookFixture;
 import org.todaybook.bookservice.domain.dto.BookCreate;
 import org.todaybook.bookservice.domain.dto.BookUpdate;
 
-@ActiveProfiles("test")
 class BookTest {
 
   @Test
-  @DisplayName("유효한 도서 생성 테스트")
+  @DisplayName("도서 생성 테스트")
   void test1() {
-    BookCreate dto =
-        new BookCreate("0000000000001", "도서 제목", List.of("소설"), "도서 설명", "도서 저자", null, null, null);
-
-    Book result = Book.create(dto);
+    Book result = Book.create(BookFixture.bookCreate());
 
     assertNotNull(result);
     assertEquals("0000000000001", result.getIsbn());
@@ -35,13 +31,11 @@ class BookTest {
   }
 
   @Test
-  @DisplayName("유효한 도서 업데이트 테스트")
+  @DisplayName("도서 업데이트 테스트")
   void test3() {
     Book book = Book.create(BookFixture.bookCreate());
 
-    BookUpdate dto = new BookUpdate("도서 제목 수정", List.of("소설"), "도서 설명", "도서 저자", null, null, null);
-
-    Book result = book.update(dto);
+    Book result = book.update(BookFixture.bookUpdate());
 
     assertNotNull(result);
     assertEquals("도서 제목 수정", result.getTitle());

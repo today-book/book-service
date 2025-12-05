@@ -8,9 +8,10 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 @TestConfiguration
 public class TestContainersConfig {
 
-  @Container @ServiceConnection
-  public static PostgreSQLContainer postgres =
-      new PostgreSQLContainer("pgvector/pgvector:pg17")
+  @Container
+  @ServiceConnection
+  public static final PostgreSQLContainer postgres =
+      new PostgreSQLContainer("postgres:17")
           .withDatabaseName("testdb")
           .withUsername("root")
           .withPassword("1234");

@@ -86,8 +86,5 @@ spotless {
 
 tasks.named("test") {
     dependsOn(tasks.named("spotlessCheck"))
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

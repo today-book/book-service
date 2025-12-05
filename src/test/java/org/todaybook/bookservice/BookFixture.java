@@ -11,7 +11,7 @@ public class BookFixture {
         "0000000000001",
         "도서 제목",
         List.of("IT", "Programming"),
-        "도서 소개글입니다.",
+        "도서 소개",
         "홍길동",
         "출판사",
         LocalDateTime.of(2025, 1, 1, 0, 0),
