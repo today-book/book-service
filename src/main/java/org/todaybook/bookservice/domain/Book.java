@@ -16,8 +16,8 @@ import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.todaybook.bookservice.domain.dto.BookCreate;
-import org.todaybook.bookservice.domain.dto.BookUpdate;
+import org.todaybook.bookservice.domain.dto.BookCreateInfo;
+import org.todaybook.bookservice.domain.dto.BookUpdateInfo;
 
 @Entity
 @Getter
@@ -60,39 +60,39 @@ public class Book {
   @LastModifiedDate
   private LocalDateTime updatedAt;
 
-  public static Book create(BookCreate dto) {
-    validateIsbn(dto.isbn());
-    validateTitle(dto.title());
-    validateDescription(dto.description());
-    validateAuthor(dto.author());
+  public static Book create(BookCreateInfo request) {
+    validateIsbn(request.isbn());
+    validateTitle(request.title());
+    validateDescription(request.description());
+    validateAuthor(request.author());
 
     Book book = new Book();
 
     book.id = BookId.generateId();
-    book.isbn = dto.isbn();
-    book.title = dto.title();
-    book.categories = dto.categories();
-    book.description = dto.description();
-    book.author = dto.author();
-    book.publisher = dto.publisher();
-    book.publishedAt = dto.publishedAt();
-    book.thumbnail = dto.thumbnail();
+    book.isbn = request.isbn();
+    book.title = request.title();
+    book.categories = request.categories();
+    book.description = request.description();
+    book.author = request.author();
+    book.publisher = request.publisher();
+    book.publishedAt = request.publishedAt();
+    book.thumbnail = request.thumbnail();
 
     return book;
   }
 
-  public Book update(BookUpdate dto) {
-    validateTitle(dto.title());
-    validateDescription(dto.description());
-    validateAuthor(dto.author());
+  public Book update(BookUpdateInfo request) {
+    validateTitle(request.title());
+    validateDescription(request.description());
+    validateAuthor(request.author());
 
-    this.title = dto.title();
-    this.categories = dto.categories();
-    this.description = dto.description();
-    this.author = dto.author();
-    this.publisher = dto.publisher();
-    this.publishedAt = dto.publishedAt();
-    this.thumbnail = dto.thumbnail();
+    this.title = request.title();
+    this.categories = request.categories();
+    this.description = request.description();
+    this.author = request.author();
+    this.publisher = request.publisher();
+    this.publishedAt = request.publishedAt();
+    this.thumbnail = request.thumbnail();
 
     return this;
   }

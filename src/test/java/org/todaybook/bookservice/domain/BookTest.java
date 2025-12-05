@@ -6,8 +6,8 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.todaybook.bookservice.BookFixture;
-import org.todaybook.bookservice.domain.dto.BookCreate;
-import org.todaybook.bookservice.domain.dto.BookUpdate;
+import org.todaybook.bookservice.domain.dto.BookCreateInfo;
+import org.todaybook.bookservice.domain.dto.BookUpdateInfo;
 
 class BookTest {
 
@@ -23,8 +23,8 @@ class BookTest {
   @Test
   @DisplayName("잘못된 도서 생성 테스트")
   void test2() {
-    BookCreate dto =
-        new BookCreate(null, "도서 제목", List.of("소설"), "도서 설명", "도서 저자", null, null, null);
+    BookCreateInfo dto =
+        new BookCreateInfo(null, "도서 제목", List.of("소설"), "도서 설명", "도서 저자", null, null, null);
 
     assertThrows(IllegalArgumentException.class, () -> Book.create(dto));
   }
@@ -45,7 +45,8 @@ class BookTest {
   void test4() {
     Book book = Book.create(BookFixture.bookCreate());
 
-    BookUpdate dto = new BookUpdate(null, List.of("소설"), "도서 설명", "도서 저자", null, null, null);
+    BookUpdateInfo dto =
+        new BookUpdateInfo(null, List.of("소설"), "도서 설명", "도서 저자", null, null, null);
 
     assertThrows(IllegalArgumentException.class, () -> book.update(dto));
   }
