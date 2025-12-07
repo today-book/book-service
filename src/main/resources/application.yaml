@@ -16,3 +16,6 @@ spring:
           batch_size: 100
         order_inserts: true
         order_updates: true
+
+  kafka:
+    bootstrap-servers: http://34.64.57.180:9092
