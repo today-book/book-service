@@ -28,6 +28,13 @@ public class BookManageServiceImpl implements BookManageService {
 
   @Override
   public Book save(BookCreateInfo request) {
+    repository
+        .findByIsbn(request.isbn())
+        .ifPresent(
+            book -> {
+              throw new IllegalStateException();
+            });
+
     Book book = Book.create(request);
 
     repository.save(book);
@@ -47,7 +54,7 @@ public class BookManageServiceImpl implements BookManageService {
   }
 
   @Override
-  public void register(List<BookCreateInfo> request) {
+  public List<Book> register(List<BookCreateInfo> request) {
     // isbn 조회
     List<String> isbns = request.stream().map(BookCreateInfo::isbn).collect(Collectors.toList());
 
@@ -71,7 +78,7 @@ public class BookManageServiceImpl implements BookManageService {
       }
     }
 
-    repository.saveAll(bookList);
+    return repository.saveAll(bookList);
   }
 
   private Book update(Book book, BookCreateInfo request) {
