@@ -11,5 +11,5 @@ public interface BookManageService {
 
   Book update(BookId id, BookUpdateInfo request);
 
-  void register(List<BookCreateInfo> request);
+  List<Book> register(List<BookCreateInfo> request);
 }
