@@ -22,8 +22,9 @@ public class BookServiceImpl implements BookService {
   private final BookManageService manageService;
 
   @Override
-  public List<BookResponse> getBooksByIds(List<BookId> ids) {
-    List<Book> books = queryService.getBooksByIds(ids);
+  public List<BookResponse> getBooksByIds(List<UUID> ids) {
+    List<BookId> bookIds = ids.stream().map(BookId::of).toList();
+    List<Book> books = queryService.getBooksByIds(bookIds);
 
     return books.stream().map(BookResponse::from).toList();
   }
