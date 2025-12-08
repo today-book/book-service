@@ -1,6 +1,6 @@
 package org.todaybook.bookservice;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import org.todaybook.bookservice.domain.dto.BookCreateInfo;
 import org.todaybook.bookservice.domain.dto.BookUpdateInfo;
@@ -18,7 +18,7 @@ public class BookFixture {
         "도서 소개",
         "홍길동",
         "출판사",
-        LocalDateTime.of(2025, 1, 1, 0, 0),
+        LocalDate.of(2025, 1, 1),
         "http://example.com/thumb.png");
   }
 
@@ -29,7 +29,7 @@ public class BookFixture {
         "도서 소개글을 수정합니다.",
         "홍길동",
         "출판사",
-        LocalDateTime.of(2025, 1, 1, 0, 0),
+        LocalDate.of(2025, 1, 1),
         "http://example.com/thumb.png");
   }
 }

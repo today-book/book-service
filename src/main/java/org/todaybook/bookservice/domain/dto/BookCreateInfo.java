@@ -1,6 +1,6 @@
 package org.todaybook.bookservice.domain.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public record BookCreateInfo(
@@ -10,5 +10,5 @@ public record BookCreateInfo(
     String description,
     String author,
     String publisher,
-    LocalDateTime publishedAt,
+    LocalDate publishedAt,
     String thumbnail) {}

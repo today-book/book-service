@@ -5,6 +5,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
@@ -47,7 +48,7 @@ public class Book {
 
   @Column private String publisher;
 
-  @Column private LocalDateTime publishedAt;
+  @Column private LocalDate publishedAt;
 
   @Column(columnDefinition = "TEXT")
   private String thumbnail;

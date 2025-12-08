@@ -1,6 +1,6 @@
 package org.todaybook.bookservice.infrastructure.kfaka.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public record BookConsumeMessage(
@@ -10,5 +10,5 @@ public record BookConsumeMessage(
     String description,
     String author,
     String publisher,
-    LocalDateTime publishedAt,
+    LocalDate publishedAt,
     String thumbnail) {}

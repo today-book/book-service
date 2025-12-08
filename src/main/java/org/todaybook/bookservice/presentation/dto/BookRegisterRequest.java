@@ -1,6 +1,6 @@
 package org.todaybook.bookservice.presentation.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +16,6 @@ public class BookRegisterRequest {
   private String description;
   private String author;
   private String publisher;
-  private LocalDateTime publishedAt;
+  private LocalDate publishedAt;
   private String thumbnail;
 }
