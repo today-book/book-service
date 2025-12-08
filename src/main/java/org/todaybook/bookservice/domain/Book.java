@@ -100,25 +100,25 @@ public class Book {
 
   public static void validateIsbn(String isbn) {
     if (isbn == null || isbn.isBlank()) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("도서 isbn은 비어있을 수 없습니다.");
     }
   }
 
   public static void validateTitle(String title) {
     if (title == null || title.isBlank()) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("도서 제목(title)은 비어있을 수 없습니다.");
     }
   }
 
   public static void validateDescription(String description) {
     if (description == null || description.isBlank()) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("도서 소개(description)은 비어있을 수 없습니다.");
     }
   }
 
   public static void validateAuthor(String author) {
     if (author == null || author.isBlank()) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("도서 저자(author)는 비어있을 수 없습니다.");
     }
   }
 }
