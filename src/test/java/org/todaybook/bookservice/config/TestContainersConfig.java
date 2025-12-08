@@ -16,7 +16,6 @@ public class TestContainersConfig {
             .withDatabaseName("testdb")
             .withUsername("root")
             .withPassword("1234");
-    postgres.start();
     return postgres;
   }
 }

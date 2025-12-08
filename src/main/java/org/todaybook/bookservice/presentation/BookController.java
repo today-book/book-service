@@ -1,4 +1,4 @@
-package org.todaybook.bookservice.presentation.dto;
+package org.todaybook.bookservice.presentation;
 
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.todaybook.bookservice.application.service.BookService;
+import org.todaybook.bookservice.presentation.dto.BookResponse;
 
 @RestController
 @RequiredArgsConstructor
