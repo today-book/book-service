@@ -1,3 +1,5 @@
+TRUNCATE TABLE book.p_books RESTART IDENTITY CASCADE;
+
 INSERT INTO book.p_books (
     id, isbn, title, categories, description, author,
     publisher, published_at, thumbnail, created_at, updated_at

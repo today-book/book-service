@@ -7,8 +7,12 @@ import org.todaybook.bookservice.domain.dto.BookUpdateInfo;
 
 public class BookFixture {
   public static BookCreateInfo bookCreate() {
+    return bookCreate("000000000001");
+  }
+
+  public static BookCreateInfo bookCreate(String isbn) {
     return new BookCreateInfo(
-        "0000000000001",
+        isbn,
         "도서 제목",
         List.of("IT", "Programming"),
         "도서 소개",

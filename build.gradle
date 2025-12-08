@@ -54,7 +54,6 @@ dependencies {
     // kafka
     implementation 'org.springframework.kafka:spring-kafka'
 
-
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -88,6 +87,6 @@ spotless {
 }
 
 tasks.named("test") {
-    dependsOn(tasks.named("spotlessCheck"))
+    dependsOn(tasks.named("spotlessApply"))
     useJUnitPlatform()
 }
