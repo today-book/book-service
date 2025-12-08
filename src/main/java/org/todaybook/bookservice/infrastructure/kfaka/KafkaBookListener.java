@@ -19,8 +19,8 @@ public class KafkaBookListener {
 
   @KafkaListener(topics = "book.parsed", containerFactory = "batchKafkaListenerContainerFactory")
   public void parsed(List<BookConsumeMessage> messages) {
-    List<BookRegisterRequest> request = messages.stream().map(BookMapper::toRequest).toList();
     log.debug("[TODAY-BOOK] Kafka 메세지 수신: {}", messages);
+    List<BookRegisterRequest> request = messages.stream().map(BookMapper::toRequest).toList();
     bookService.register(request);
   }
 }
