@@ -2,7 +2,9 @@ package org.todaybook.bookservice.domain.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+import lombok.Builder;
 
+@Builder
 public record BookCreateInfo(
     String isbn,
     String title,

@@ -25,7 +25,7 @@ public class BookQueryServiceImpl implements BookQueryService {
         ids.stream().filter(id -> books.stream().noneMatch(b -> b.getId().equals(id))).toList();
 
     if (!missingIds.isEmpty()) {
-      log.debug("찾을 수 없는 도서 ID: {}", missingIds);
+      log.debug("[BOOK-SERVICE] 찾을 수 없는 도서 ID: {}", missingIds);
     }
 
     return books;

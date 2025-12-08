@@ -10,6 +10,7 @@ import org.todaybook.bookservice.domain.BookId;
 import org.todaybook.bookservice.domain.dto.BookCreateInfo;
 import org.todaybook.bookservice.domain.service.BookManageService;
 import org.todaybook.bookservice.domain.service.BookQueryService;
+import org.todaybook.bookservice.domain.service.BookRegisterService;
 import org.todaybook.bookservice.presentation.dto.BookRegisterRequest;
 import org.todaybook.bookservice.presentation.dto.BookResponse;
 import org.todaybook.bookservice.presentation.dto.BookUpdateRequest;
@@ -20,6 +21,7 @@ public class BookServiceImpl implements BookService {
 
   private final BookQueryService queryService;
   private final BookManageService manageService;
+  private final BookRegisterService registerService;
 
   @Override
   public List<BookResponse> getBooksByIds(List<UUID> ids) {
@@ -35,14 +37,14 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public void register(List<BookRegisterRequest> request) {
-    List<BookCreateInfo> bookCreateInfos = request.stream().map(BookMapper::toDomain).toList();
-
-    manageService.register(bookCreateInfos);
+  public void update(UUID bookId, BookUpdateRequest request) {
+    manageService.update(BookId.of(bookId), BookMapper.toDomain(request));
   }
 
   @Override
-  public void update(UUID bookId, BookUpdateRequest request) {
-    manageService.update(BookId.of(bookId), BookMapper.toDomain(request));
+  public void register(List<BookRegisterRequest> request) {
+    List<BookCreateInfo> bookCreateInfos = request.stream().map(BookMapper::toDomain).toList();
+
+    registerService.register(bookCreateInfos);
   }
 }
