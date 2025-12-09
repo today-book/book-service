@@ -15,8 +15,8 @@ import org.todaybook.bookservice.BookFixture;
 import org.todaybook.bookservice.config.TestContainersConfig;
 import org.todaybook.bookservice.domain.Book;
 
-@ActiveProfiles("test")
 @SpringBootTest
+@ActiveProfiles("test")
 @Import({TestContainersConfig.class})
 class BookRepositoryTest {
 

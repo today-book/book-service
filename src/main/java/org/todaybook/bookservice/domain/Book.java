@@ -5,6 +5,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
@@ -47,7 +48,7 @@ public class Book {
 
   @Column private String publisher;
 
-  @Column private LocalDateTime publishedAt;
+  @Column private LocalDate publishedAt;
 
   @Column(columnDefinition = "TEXT")
   private String thumbnail;
@@ -99,25 +100,25 @@ public class Book {
 
   public static void validateIsbn(String isbn) {
     if (isbn == null || isbn.isBlank()) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("도서 isbn은 비어있을 수 없습니다.");
     }
   }
 
   public static void validateTitle(String title) {
     if (title == null || title.isBlank()) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("도서 제목(title)은 비어있을 수 없습니다.");
     }
   }
 
   public static void validateDescription(String description) {
     if (description == null || description.isBlank()) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("도서 소개(description)은 비어있을 수 없습니다.");
     }
   }
 
   public static void validateAuthor(String author) {
     if (author == null || author.isBlank()) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("도서 저자(author)는 비어있을 수 없습니다.");
     }
   }
 }

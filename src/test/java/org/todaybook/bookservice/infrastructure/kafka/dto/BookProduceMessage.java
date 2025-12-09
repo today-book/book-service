@@ -1,11 +1,9 @@
-package org.todaybook.bookservice.domain.dto;
+package org.todaybook.bookservice.infrastructure.kafka.dto;
 
 import java.time.LocalDate;
 import java.util.List;
-import lombok.Builder;
 
-@Builder
-public record BookCreateInfo(
+public record BookProduceMessage(
     String isbn,
     String title,
     List<String> categories,

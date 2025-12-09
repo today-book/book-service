@@ -1,5 +1,6 @@
 package org.todaybook.bookservice.presentation.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,7 @@ public record BookResponse(
     String description,
     String author,
     String publisher,
-    LocalDateTime publishedAt,
+    LocalDate publishedAt,
     String thumbnail,
     LocalDateTime createdAt,
     LocalDateTime updatedAt) {
