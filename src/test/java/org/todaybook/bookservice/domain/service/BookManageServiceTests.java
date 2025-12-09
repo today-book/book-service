@@ -82,7 +82,7 @@ class BookManageServiceTests {
   void test4() {
     BookUpdateInfo bookUpdateInfo = BookFixture.bookUpdate();
 
-    BookId bookId = BookId.of(UUID.fromString("00000000-0000-0000-0000-0000000000"));
+    BookId bookId = BookId.of(UUID.fromString("00000000-0000-0000-0000-000000000000"));
 
     BookNotFoundException exception =
         assertThrows(
