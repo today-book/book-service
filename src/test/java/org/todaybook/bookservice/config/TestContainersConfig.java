@@ -11,11 +11,9 @@ public class TestContainersConfig {
   @Bean
   @ServiceConnection
   public PostgreSQLContainer postgreSQLContainer() {
-    PostgreSQLContainer postgres =
-        new PostgreSQLContainer("postgres:17")
-            .withDatabaseName("testdb")
-            .withUsername("root")
-            .withPassword("1234");
-    return postgres;
+    return new PostgreSQLContainer("postgres:17")
+        .withDatabaseName("testdb")
+        .withUsername("root")
+        .withPassword("1234");
   }
 }
