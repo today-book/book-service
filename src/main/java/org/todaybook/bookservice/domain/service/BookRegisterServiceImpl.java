@@ -1,5 +1,6 @@
 package org.todaybook.bookservice.domain.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,26 +63,63 @@ public class BookRegisterServiceImpl implements BookRegisterService {
 
   private List<BookCreateInfo> mergeCreateInfo(List<BookCreateInfo> infos) {
     return infos.stream().collect(Collectors.groupingBy(BookCreateInfo::isbn)).values().stream()
-        .map(books -> (books.size() == 1) ? books.getFirst() : reduceCreateInfo(books))
+        .map(
+            books -> {
+              if (books.size() == 1) {
+                return books.getFirst();
+              } else {
+                log.debug("[TODAY-BOOK] 동일 ISBN({}) {}건 병합", books.getFirst().isbn(), books.size());
+                return reduceCreateInfo(books);
+              }
+            })
         .toList();
   }
 
   private BookCreateInfo reduceCreateInfo(List<BookCreateInfo> infos) {
     return infos.stream()
         .reduce(
-            (base, request) ->
-                BookCreateInfo.builder()
-                    .isbn(request.isbn())
-                    .title(request.title())
-                    .categories(strategy.updateCategories(base.categories(), request.categories()))
-                    .description(
-                        strategy.updateDescription(base.description(), request.description()))
-                    .author(request.author())
-                    .publisher(strategy.updatePublisher(base.publisher(), request.publisher()))
-                    .publishedAt(
-                        strategy.updatePublishedAt(base.publishedAt(), request.publishedAt()))
-                    .thumbnail(strategy.updateThumbnail(base.thumbnail(), request.thumbnail()))
-                    .build())
-        .orElseThrow();
+            (base, request) -> {
+              List<String> categories =
+                  strategy.updateCategories(base.categories(), request.categories());
+              String description =
+                  strategy.updateDescription(base.description(), request.description());
+              String publisher = strategy.updatePublisher(base.publisher(), request.publisher());
+              LocalDate publishedAt =
+                  strategy.updatePublishedAt(base.publishedAt(), request.publishedAt());
+              String thumbnail = strategy.updateThumbnail(base.thumbnail(), request.thumbnail());
+
+              log.debug(
+                  """
+                [TODAY-BOOK] ISBN={} 병합 결과:
+                  - categories: {} -> {}
+                  - description: {} -> {}
+                  - publisher: {} -> {}
+                  - publishedAt: {} -> {}
+                  - thumbnail: {} -> {}
+                """,
+                  request.isbn(),
+                  base.categories(),
+                  categories,
+                  base.description(),
+                  description,
+                  base.publisher(),
+                  publisher,
+                  base.publishedAt(),
+                  publishedAt,
+                  base.thumbnail(),
+                  thumbnail);
+
+              return BookCreateInfo.builder()
+                  .isbn(request.isbn())
+                  .title(request.title())
+                  .categories(categories)
+                  .description(description)
+                  .author(request.author())
+                  .publisher(publisher)
+                  .publishedAt(publishedAt)
+                  .thumbnail(thumbnail)
+                  .build();
+            })
+        .orElseThrow(() -> new IllegalStateException("[TODAY-BOOK] 병합할 데이터가 없습니다."));
   }
 }
