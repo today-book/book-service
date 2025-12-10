@@ -1,0 +1,48 @@
+name: book-service docker file
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: today-book/book-service
+  VERSION: latest
+
+jobs:
+  Deploy:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    environment: deploy
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Build Docker Image
+        run: |
+          IMAGE=$REGISTRY/$IMAGE_NAME:$VERSION
+           chmod +x gradlew
+           ./gradlew bootJar
+           docker build -t $IMAGE .
+           echo "IMAGE_URI=$IMAGE" >> $GITHUB_ENV
+
+      - name: Log into container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish container image
+        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
