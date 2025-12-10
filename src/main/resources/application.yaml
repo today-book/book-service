@@ -18,4 +18,4 @@ spring:
         order_updates: true
 
   kafka:
-    bootstrap-servers: http://34.64.57.180:9092
+    bootstrap-servers: 35.216.44.30:9092

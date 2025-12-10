@@ -3,7 +3,9 @@ package org.todaybook.bookservice.infrastructure.kfaka;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,12 +28,23 @@ public class KafkaConfig {
   @Value("${spring.kafka.bootstrap-servers}")
   private String server;
 
+  @Value("${spring.kafka.properties.sasl.jaas.config}")
+  private String jaasConfig;
+
   @Bean
   public ConsumerFactory<String, BookConsumeMessage> consumerFactory() {
     Map<String, Object> config = new HashMap<>();
 
     config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, server);
-    config.put(ConsumerConfig.GROUP_ID_CONFIG, "book-service");
+    config.put(ConsumerConfig.GROUP_ID_CONFIG, "book-service5");
+    config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+    // 보안 설정
+    config.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT");
+    config.put(SaslConfigs.SASL_MECHANISM, "SCRAM-SHA-256");
+    config.put(SaslConfigs.SASL_JAAS_CONFIG, jaasConfig);
+    // 만약 jaasConfig 주입이 귀찮다면 아래처럼 직접 넣어도 되지만 권장하지 않음
+    // config.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"Qwer!234\";");
 
     config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
     config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
