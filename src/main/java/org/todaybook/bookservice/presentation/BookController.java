@@ -12,7 +12,7 @@ import org.todaybook.bookservice.presentation.dto.BookListResponse;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/books")
+@RequestMapping("/internal/v1/books")
 public class BookController {
 
   private final BookService bookService;
