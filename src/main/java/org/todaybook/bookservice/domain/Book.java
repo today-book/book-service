@@ -33,7 +33,7 @@ public class Book {
   @Column(nullable = false, length = 20)
   private String isbn;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "TEXT")
   private String title;
 
   @Column(columnDefinition = "text[]")
