@@ -44,7 +44,9 @@ public class KafkaConfig {
     config.put(SaslConfigs.SASL_MECHANISM, "SCRAM-SHA-256");
     config.put(SaslConfigs.SASL_JAAS_CONFIG, jaasConfig);
     // 만약 jaasConfig 주입이 귀찮다면 아래처럼 직접 넣어도 되지만 권장하지 않음
-    // config.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"Qwer!234\";");
+    // config.put(SaslConfigs.SASL_JAAS_CONFIG,
+    // "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\"
+    // password=\"Qwer!234\";");
 
     config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
     config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
