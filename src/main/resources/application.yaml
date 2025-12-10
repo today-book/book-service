@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: book-service
@@ -18,4 +21,10 @@ spring:
         order_updates: true
 
   kafka:
-    bootstrap-servers: 35.216.44.30:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    properties:
+      # 보안 프로토콜 설정
+      security.protocol: SASL_PLAINTEXT
+      sasl.mechanism: SCRAM-SHA-256
+      # JAAS Config (세미콜론 필수!)
+      sasl.jaas.config: ${KAFKA_JAAS_CONFIG}
