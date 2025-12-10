@@ -36,7 +36,7 @@ public class KafkaConfig {
     Map<String, Object> config = new HashMap<>();
 
     config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, server);
-    config.put(ConsumerConfig.GROUP_ID_CONFIG, "book-service5");
+    config.put(ConsumerConfig.GROUP_ID_CONFIG, "book-service-001");
     config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
     // 보안 설정
