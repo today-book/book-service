@@ -1,4 +1,4 @@
-name: book-service docker file
+name: Deploy to Amazon EC2
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: today-book/book-service
-  VERSION: latest
+  VERSION: 1.0.0
 
 jobs:
   Deploy:
@@ -49,3 +49,31 @@ jobs:
           IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
           docker build -t $IMAGE .
           docker push $IMAGE
+          echo "IMAGE_URI=$IMAGE" >> $GITHUB_ENV
+
+      - name: Executing remote ssh commands
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.DEV_REMOTE_IP }}
+          username: ${{ secrets.DEV_REMOTE_USER }}
+          key: ${{ secrets.DEV_REMOTE_PRIVATE_KEY }}
+          port: ${{ secrets.DEV_REMOTE_SSH_PORT }}
+          script: |
+            echo "배포 시작"
+            sudo docker stop book-service || true
+            sudo docker rm book-service || true
+            sudo docker rmi ${{ env.IMAGE_URI }} || true
+            
+            echo "GHCR 로그인"
+            echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+            
+            echo "이미지 pull"
+            sudo docker pull ${{ env.IMAGE_URI }}
+            
+            sudo docker run -d --name book-service -p 9003:8080  \
+            -e POSTGRESQL_URL=${{ secrets.POSTGRESQL_URL }} \
+            -e POSTGRESQL_USERNAME=${{ secrets.POSTGRESQL_USERNAME }} \
+            -e POSTGRESQL_PASSWORD=${{ secrets.POSTGRESQL_PASSWORD }} \
+            -e KAFKA_BOOTSTRAP_SERVERS=${{ secrets.KAFKA_BOOTSTRAP_SERVERS }} \
+            -e KAFKA_JAAS_CONFIG="$(echo '${{ secrets.KAFKA_JAAS_CONFIG_BASE64 }}' | base64 -d)" \
+            ${{ env.IMAGE_URI }}
