@@ -70,7 +70,8 @@ jobs:
             echo "이미지 pull"
             sudo docker pull ${{ env.IMAGE_URI }}
             
-            sudo docker run -d --name book-service -p 9003:8080  \
+            sudo docker run -d --name book-service -p 9003:8080 \
+            --network internal-net \
             -e POSTGRESQL_URL=${{ secrets.POSTGRESQL_URL }} \
             -e POSTGRESQL_USERNAME=${{ secrets.POSTGRESQL_USERNAME }} \
             -e POSTGRESQL_PASSWORD=${{ secrets.POSTGRESQL_PASSWORD }} \
