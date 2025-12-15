@@ -2,22 +2,25 @@ name: Deploy to Amazon EC2
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - '*'
 
 env:
+  APP_NAME: book-service
   REGISTRY: ghcr.io
   IMAGE_NAME: today-book/book-service
-  VERSION: 1.0.0
+  VERSION: ${{ github.ref_name }}
+  PROFILE:
 
 jobs:
   Deploy:
+    environment: dev
     name: Build Docker Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
       security-events: write
-    environment: deploy
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -60,9 +63,9 @@ jobs:
           port: ${{ secrets.DEV_REMOTE_SSH_PORT }}
           script: |
             echo "배포 시작"
-            sudo docker stop book-service || true
-            sudo docker rm book-service || true
-            sudo docker rmi ${{ env.IMAGE_URI }} || true
+            sudo docker stop ${{ env.APP_NAME }} || true
+            sudo docker rm ${{ env.APP_NAME }} || true
+            sudo docker images | grep "${{ env.IMAGE_NAME }}" | awk '{print $3}' | xargs -r sudo docker rmi -f || true
             
             echo "GHCR 로그인"
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u "${{ github.actor }}" --password-stdin
@@ -70,11 +73,13 @@ jobs:
             echo "이미지 pull"
             sudo docker pull ${{ env.IMAGE_URI }}
             
-            sudo docker run -d --name book-service -p 9003:8080 \
+            sudo docker run -d --name ${{ env.APP_NAME }} -p 9003:9003 \
             --network internal-net \
-            -e POSTGRESQL_URL=${{ secrets.POSTGRESQL_URL }} \
-            -e POSTGRESQL_USERNAME=${{ secrets.POSTGRESQL_USERNAME }} \
-            -e POSTGRESQL_PASSWORD=${{ secrets.POSTGRESQL_PASSWORD }} \
-            -e KAFKA_BOOTSTRAP_SERVERS=${{ secrets.KAFKA_BOOTSTRAP_SERVERS }} \
-            -e KAFKA_JAAS_CONFIG="$(echo '${{ secrets.KAFKA_JAAS_CONFIG_BASE64 }}' | base64 -d)" \
+            -e SPRING_PROFILES_ACTIVE=${{ env.PROFILE }} \
+            -e POSTGRESQL_URL=${{ secrets.DEV_POSTGRESQL_URL }} \
+            -e POSTGRESQL_USERNAME=${{ secrets.DEV_POSTGRESQL_USERNAME }} \
+            -e POSTGRESQL_PASSWORD=${{ secrets.DEV_POSTGRESQL_PASSWORD }} \
+            -e KAFKA_BOOTSTRAP_SERVERS=${{ secrets.DEV_KAFKA_BOOTSTRAP_SERVERS }} \
+            -e KAFKA_USERNAME=${{ secrets.DEV_KAFKA_USERNAME }} \
+            -e KAFKA_PASSWORD=${{ secrets.DEV_KAFKA_PASSWORD }} \
             ${{ env.IMAGE_URI }}
