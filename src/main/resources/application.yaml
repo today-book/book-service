@@ -5,6 +5,10 @@ spring:
   application:
     name: book-service
 
+  cloud:
+    discovery:
+      enabled: true
+
   datasource:
     url: ${POSTGRESQL_URL}
     username: ${POSTGRESQL_USERNAME}
@@ -31,3 +35,13 @@ spring:
         org.apache.kafka.common.security.scram.ScramLoginModule required 
         username="${KAFKA_USERNAME}" 
         password="${KAFKA_PASSWORD}";
+
+eureka:
+  instance:
+    hostname: ${spring.application.name}
+    prefer-ip-address: false
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:9100/eureka/
