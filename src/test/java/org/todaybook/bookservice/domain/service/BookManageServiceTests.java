@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.todaybook.bookservice.BookFixture;
-import org.todaybook.bookservice.config.TestContainersConfig;
+import org.todaybook.bookservice.config.KafkaContainerConfig;
+import org.todaybook.bookservice.config.PostgresContainerConfig;
 import org.todaybook.bookservice.domain.Book;
 import org.todaybook.bookservice.domain.BookId;
 import org.todaybook.bookservice.domain.dto.BookCreateInfo;
@@ -25,8 +26,8 @@ import org.todaybook.commoncore.message.MessageResolver;
 @SpringBootTest
 @ActiveProfiles("test")
 @Sql("classpath:sql/book-data.sql")
-@Import({TestContainersConfig.class})
-class BookManageServiceTests {
+@Import({PostgresContainerConfig.class})
+class BookManageServiceTests extends KafkaContainerConfig {
 
   @Autowired private BookRepository repository;
 

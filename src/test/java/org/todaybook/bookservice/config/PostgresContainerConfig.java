@@ -6,14 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
 @TestConfiguration
-public class TestContainersConfig {
+public class PostgresContainerConfig {
 
   @Bean
   @ServiceConnection
-  public PostgreSQLContainer postgreSQLContainer() {
-    return new PostgreSQLContainer("postgres:17")
-        .withDatabaseName("testdb")
-        .withUsername("root")
-        .withPassword("1234");
+  @SuppressWarnings("resource")
+  public PostgreSQLContainer postgresContainer() {
+    return new PostgreSQLContainer("postgres:17").withDatabaseName("test-postgres");
   }
 }

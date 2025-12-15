@@ -57,6 +57,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation "org.testcontainers:testcontainers-postgresql:2.0.2"
     testImplementation "org.testcontainers:testcontainers-junit-jupiter:2.0.2"
+    testImplementation 'org.testcontainers:testcontainers-kafka:2.0.1'
 
     // kafka
     implementation 'org.springframework.kafka:spring-kafka'

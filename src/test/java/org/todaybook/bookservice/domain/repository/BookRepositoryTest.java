@@ -12,13 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.todaybook.bookservice.BookFixture;
-import org.todaybook.bookservice.config.TestContainersConfig;
+import org.todaybook.bookservice.config.KafkaContainerConfig;
+import org.todaybook.bookservice.config.PostgresContainerConfig;
 import org.todaybook.bookservice.domain.Book;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Import({TestContainersConfig.class})
-class BookRepositoryTest {
+@Import({PostgresContainerConfig.class})
+class BookRepositoryTest extends KafkaContainerConfig {
 
   @Autowired private BookRepository repository;
 
