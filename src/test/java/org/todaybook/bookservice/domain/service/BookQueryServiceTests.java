@@ -11,15 +11,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-import org.todaybook.bookservice.config.TestContainersConfig;
+import org.todaybook.bookservice.config.KafkaContainerConfig;
+import org.todaybook.bookservice.config.PostgresContainerConfig;
 import org.todaybook.bookservice.domain.Book;
 import org.todaybook.bookservice.domain.BookId;
 
 @SpringBootTest
 @ActiveProfiles("test")
 @Sql("classpath:sql/book-data.sql")
-@Import({TestContainersConfig.class})
-class BookQueryServiceTests {
+@Import({PostgresContainerConfig.class})
+class BookQueryServiceTests extends KafkaContainerConfig {
 
   @Autowired private BookQueryService queryService;
 

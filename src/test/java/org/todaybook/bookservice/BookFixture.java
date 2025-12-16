@@ -24,7 +24,7 @@ public class BookFixture {
 
   public static BookUpdateInfo bookUpdate() {
     return new BookUpdateInfo(
-        "도서 제목",
+        "도서 제목 수정",
         List.of("IT", "Programming", "AI"),
         "도서 소개글을 수정합니다.",
         "홍길동",

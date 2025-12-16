@@ -2,13 +2,14 @@ package org.todaybook.bookservice.infrastructure.kfaka;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -19,30 +20,29 @@ import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.todaybook.bookservice.infrastructure.kfaka.dto.BookConsumeMessage;
+import org.todaybook.bookservice.infrastructure.kfaka.dto.CustomKafkaProperties;
 
 @Slf4j
 @EnableKafka
 @Configuration
+@RequiredArgsConstructor
+@EnableConfigurationProperties(CustomKafkaProperties.class)
 public class KafkaConfig {
 
-  @Value("${spring.kafka.bootstrap-servers}")
-  private String server;
-
-  @Value("${spring.kafka.properties.sasl.jaas.config}")
-  private String jaasConfig;
+  private final CustomKafkaProperties properties;
 
   @Bean
   public ConsumerFactory<String, BookConsumeMessage> consumerFactory() {
     Map<String, Object> config = new HashMap<>();
 
-    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, server);
+    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, properties.bootstrapServers());
     config.put(ConsumerConfig.GROUP_ID_CONFIG, "book-service-001");
     config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
     // 보안 설정
-    config.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT");
-    config.put(SaslConfigs.SASL_MECHANISM, "SCRAM-SHA-256");
-    config.put(SaslConfigs.SASL_JAAS_CONFIG, jaasConfig);
+    config.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, properties.securityProtocol());
+    config.put(SaslConfigs.SASL_MECHANISM, properties.saslMechanism());
+    config.put(SaslConfigs.SASL_JAAS_CONFIG, properties.jaasConfig());
     // 만약 jaasConfig 주입이 귀찮다면 아래처럼 직접 넣어도 되지만 권장하지 않음
     // config.put(SaslConfigs.SASL_JAAS_CONFIG,
     // "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\"
