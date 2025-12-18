@@ -47,14 +47,14 @@ public class BookRegisterServiceImpl implements BookRegisterService {
           BookUpdateInfo updateInfo = strategy.buildUpdateInfo(book, createInfo);
           bookList.add(book.update(updateInfo));
 
-          log.debug("[TODAY-BOOK] 기존 도서 업데이트 (isbn={})", book.getIsbn());
+          log.debug("[TODAY-BOOK] 기존 도서 도메인 업데이트 (isbn={})", book.getIsbn());
         } else {
           bookList.add(Book.create(createInfo));
 
-          log.debug("[TODAY-BOOK] 신규 도서 생성 (isbn={})", createInfo.isbn());
+          log.debug("[TODAY-BOOK] 신규 도서 도메인 생성 (isbn={})", createInfo.isbn());
         }
       } catch (Exception e) {
-        log.warn("[TODAY-BOOK] 저장 실패 (isbn={}, message={})", createInfo.isbn(), e.getMessage());
+        log.warn("[TODAY-BOOK] 도서 등록 요청 검증 실패 - skip (isbn={}, message={})", createInfo.isbn(), e.getMessage());
       }
     }
 
