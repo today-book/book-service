@@ -53,7 +53,7 @@ class BookManageServiceTests extends KafkaContainerConfig {
   @Test
   @DisplayName("도서 중복 저장 테스트")
   void test2() {
-    BookCreateInfo createInfo = BookFixture.bookCreate("978000000001");
+    BookCreateInfo createInfo = BookFixture.bookCreate("9780000000001");
 
     BookAlreadyExistsException exception =
         assertThrows(BookAlreadyExistsException.class, () -> bookManageService.save(createInfo));
