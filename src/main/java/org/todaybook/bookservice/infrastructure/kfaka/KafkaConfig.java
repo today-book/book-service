@@ -44,7 +44,7 @@ public class KafkaConfig {
     config.put(SaslConfigs.SASL_MECHANISM, properties.saslMechanism());
     config.put(SaslConfigs.SASL_JAAS_CONFIG, properties.jaasConfig());
 
-    config.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 100);
+    config.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, properties.maxPollRecords());
 
     config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
     config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
