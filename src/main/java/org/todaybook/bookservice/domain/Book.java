@@ -102,6 +102,10 @@ public class Book {
     if (isbn == null || isbn.isBlank()) {
       throw new IllegalArgumentException("도서 isbn은 비어있을 수 없습니다.");
     }
+
+    if (isbn.length() != 10 && isbn.length() != 13) {
+      throw new IllegalArgumentException("도서 isbn은 10자리(구버전) 또는 13자리(2007년 이후) 이어야 합니다.");
+    }
   }
 
   public static void validateTitle(String title) {

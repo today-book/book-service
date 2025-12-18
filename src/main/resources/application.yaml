@@ -14,13 +14,19 @@ spring:
     username: ${POSTGRESQL_USERNAME}
     password: ${POSTGRESQL_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
+    hikari:
+      maximum-pool-size: 10
+      max-lifetime: 1700000   # 28~ 29분
+      keepalive-time: 60000   # 1분
+
   jpa:
     hibernate:
       ddl-auto: none
     properties:
       hibernate:
         jdbc:
-          batch_size: 100
+          batch_size: 50
         order_inserts: true
         order_updates: true
 
@@ -35,6 +41,12 @@ spring:
         org.apache.kafka.common.security.scram.ScramLoginModule required 
         username="${KAFKA_USERNAME}" 
         password="${KAFKA_PASSWORD}";
+    consumer:
+      max-poll-records: 1000
+
+book:
+  register:
+    batch-size: 200
 
 eureka:
   instance:

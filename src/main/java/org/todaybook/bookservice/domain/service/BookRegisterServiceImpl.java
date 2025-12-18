@@ -1,5 +1,6 @@
 package org.todaybook.bookservice.domain.service;
 
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.todaybook.bookservice.domain.Book;
@@ -20,6 +22,11 @@ import org.todaybook.bookservice.domain.repository.BookRepository;
 @Transactional
 @RequiredArgsConstructor
 public class BookRegisterServiceImpl implements BookRegisterService {
+
+  @Value("${book.register.batch-size}")
+  private int batch;
+
+  private final EntityManager entityManager;
 
   private final BookUpdateStrategy strategy;
   private final BookRepository repository;
@@ -47,18 +54,29 @@ public class BookRegisterServiceImpl implements BookRegisterService {
           BookUpdateInfo updateInfo = strategy.buildUpdateInfo(book, createInfo);
           bookList.add(book.update(updateInfo));
 
-          log.debug("[TODAY-BOOK] 기존 도서 업데이트 (isbn={})", book.getIsbn());
+          log.debug("[TODAY-BOOK] 기존 도서 도메인 업데이트 (isbn={})", book.getIsbn());
         } else {
           bookList.add(Book.create(createInfo));
 
-          log.debug("[TODAY-BOOK] 신규 도서 생성 (isbn={})", createInfo.isbn());
+          log.debug("[TODAY-BOOK] 신규 도서 도메인 생성 (isbn={})", createInfo.isbn());
         }
       } catch (Exception e) {
-        log.warn("[TODAY-BOOK] 저장 실패 (isbn={}, message={})", createInfo.isbn(), e.getMessage());
+        log.warn(
+            "[TODAY-BOOK] 도서 등록 요청 검증 실패 - skip (isbn={}, message={})",
+            createInfo.isbn(),
+            e.getMessage());
       }
     }
 
-    return repository.saveAll(bookList);
+    for (int i = 0; i < bookList.size(); i += batch) {
+      // subList 는 view 이므로, booKList 구조 변경 금지
+      List<Book> chunk = bookList.subList(i, Math.min(i + batch, bookList.size()));
+      repository.saveAll(chunk);
+      entityManager.flush();
+      entityManager.clear();
+    }
+
+    return bookList;
   }
 
   private List<BookCreateInfo> mergeCreateInfo(List<BookCreateInfo> infos) {

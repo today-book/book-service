@@ -17,7 +17,7 @@ class BookTest {
     Book result = Book.create(BookFixture.bookCreate());
 
     assertNotNull(result);
-    assertEquals("000000000001", result.getIsbn());
+    assertEquals("0000000000001", result.getIsbn());
   }
 
   @Test
