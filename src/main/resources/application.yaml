@@ -17,12 +17,8 @@ spring:
 
     hikari:
       maximum-pool-size: 10
-      minimum-idle: 2
-      max-lifetime: 540000        # 9분
-      idle-timeout: 300000        # 5분
-      connection-timeout: 30000   # 30초
-      validation-timeout: 5000
-      keepalive-time: 0
+      max-lifetime: 1700000   # 28~ 29분
+      keepalive-time: 60000   # 1분
 
   jpa:
     hibernate:
@@ -46,11 +42,11 @@ spring:
         username="${KAFKA_USERNAME}" 
         password="${KAFKA_PASSWORD}";
     consumer:
-      max-poll-records: ${book.register.batch-size}
+      max-poll-records: 1000
 
 book:
   register:
-    batch-size: 100
+    batch-size: 200
 
 eureka:
   instance:
