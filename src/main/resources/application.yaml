@@ -58,6 +58,11 @@ eureka:
     service-url:
       defaultZone: http://eureka-server:9100/eureka/
 
+todaybook:
+  security:
+    mvc:
+      enabled: true
+
 management:
   endpoints:
     web:
