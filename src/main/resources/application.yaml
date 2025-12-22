@@ -50,8 +50,10 @@ book:
 
 eureka:
   instance:
-    hostname: ${spring.application.name}
-    prefer-ip-address: false
+    prefer-ip-address: true
+    ip-address: ${EUREKA_INSTANCE_IP_ADDRESS:}
+    non-secure-port: ${EUREKA_INSTANCE_NONSECUREPORT}
+    instance-id: ${spring.application.name}:${eureka.instance.ip-address:${spring.cloud.client.ip-address}}:${eureka.instance.non-secure-port}
   client:
     register-with-eureka: true
     fetch-registry: true
