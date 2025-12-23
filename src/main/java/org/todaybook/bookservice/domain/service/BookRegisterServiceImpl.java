@@ -31,7 +31,7 @@ public class BookRegisterServiceImpl implements BookRegisterService {
   public void register(List<BookCreateInfo> request) {
     // 요청 리스트 내 중복 ISBN 병합
     List<BookCreateInfo> merged = mergeCreateInfo(request);
-    log.debug("[TODAY-BOOK] 도서 등록 요청 {}건 -> 병합 후 {}건", request.size(), merged.size());
+    log.info("[TODAY-BOOK] 도서 등록 요청 {}건 -> 병합 후 {}건", request.size(), merged.size());
 
     // DB에서 기존 도서 조회
     List<String> isbns = merged.stream().map(BookCreateInfo::isbn).toList();
@@ -65,8 +65,11 @@ public class BookRegisterServiceImpl implements BookRegisterService {
     }
 
     for (int i = 0; i < bookList.size(); i += batch) {
-      // subList 는 view 이므로, booKList 구조 변경 금지
-      List<Book> chunk = bookList.subList(i, Math.min(i + batch, bookList.size()));
+      int size = Math.min(batch, bookList.size() - i);
+
+      log.info("[TODAY-BOOK] 도서 배치 처리 시작 - offset={}, size={}", i, size);
+
+      List<Book> chunk = bookList.subList(i, i + size);
       batchService.batch(chunk);
     }
   }
