@@ -42,6 +42,8 @@ spring:
         username="${KAFKA_USERNAME}" 
         password="${KAFKA_PASSWORD}";
     consumer:
+      group-id: book-service-001
+      auto-offset-reset: earliest
       max-poll-records: 1000
 
 book:
