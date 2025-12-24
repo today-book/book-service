@@ -1,6 +1,5 @@
 package org.todaybook.bookservice.domain.service;
 
-import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.todaybook.bookservice.domain.Book;
 import org.todaybook.bookservice.domain.dto.BookCreateInfo;
 import org.todaybook.bookservice.domain.dto.BookUpdateInfo;
@@ -19,23 +17,21 @@ import org.todaybook.bookservice.domain.repository.BookRepository;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class BookRegisterServiceImpl implements BookRegisterService {
 
   @Value("${book.register.batch-size}")
   private int batch;
 
-  private final EntityManager entityManager;
-
   private final BookUpdateStrategy strategy;
   private final BookRepository repository;
+  private final BookBatchService batchService;
 
   @Override
-  public List<Book> register(List<BookCreateInfo> request) {
+  public void register(List<BookCreateInfo> request) {
     // 요청 리스트 내 중복 ISBN 병합
     List<BookCreateInfo> merged = mergeCreateInfo(request);
-    log.debug("[TODAY-BOOK] 도서 등록 요청 {}건 -> 병합 후 {}건", request.size(), merged.size());
+    log.info("[TODAY-BOOK] 도서 등록 요청 {}건 -> 병합 후 {}건", request.size(), merged.size());
 
     // DB에서 기존 도서 조회
     List<String> isbns = merged.stream().map(BookCreateInfo::isbn).toList();
@@ -69,14 +65,13 @@ public class BookRegisterServiceImpl implements BookRegisterService {
     }
 
     for (int i = 0; i < bookList.size(); i += batch) {
-      // subList 는 view 이므로, booKList 구조 변경 금지
-      List<Book> chunk = bookList.subList(i, Math.min(i + batch, bookList.size()));
-      repository.saveAll(chunk);
-      entityManager.flush();
-      entityManager.clear();
-    }
+      int size = Math.min(batch, bookList.size() - i);
 
-    return bookList;
+      log.info("[TODAY-BOOK] 도서 배치 처리 시작 - offset={}, size={}", i, size);
+
+      List<Book> chunk = bookList.subList(i, i + size);
+      batchService.batch(chunk);
+    }
   }
 
   private List<BookCreateInfo> mergeCreateInfo(List<BookCreateInfo> infos) {
