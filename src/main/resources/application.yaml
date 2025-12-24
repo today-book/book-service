@@ -19,6 +19,8 @@ spring:
       maximum-pool-size: 10
       max-lifetime: 1700000   # 28~ 29분
       keepalive-time: 60000   # 1분
+      data-source-properties:
+        ApplicationName: book-service-${HOSTNAME:localhost}
 
   jpa:
     hibernate:
